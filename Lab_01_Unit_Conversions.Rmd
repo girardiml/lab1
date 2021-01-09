@@ -1,0 +1,242 @@
+---
+title: "ENVS 336 Lab 01: Introduction to R"
+subtitle: "Forecast: Chapter 2 Blackbody Radiation"
+author: "put your name here"
+date: "Monday, January 4, 2021"
+output:
+  html_document: default
+  pdf_document: default
+  github_document: default
+---
+
+```{r setup, include=FALSE}
+# This section sets up some options on knitr for processing the RMarkdown file
+knitr::knit_hooks$set(inline = function(x) { knitr:::format_sci(x, 'md')})
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r initialize, include=FALSE}
+# This section loads necessary R libraries and sources scripts that define useful functions format_md.
+
+library(tidyverse)
+library(stringr)
+
+source("scripts/format_md.R")
+```
+
+# Introduction
+
+Welcome to your first Climate Change Lab! As stated in the syllabus, I highly recommend working collaboratively on these labs; however, each person must turn in their own lab, written in their own words. If it is helpful, you are welcome to work some of the problems on paper first before transferring your work to this Rmarkdown document. However, I will only grade work turned in and pulled from GitHub.  
+
+For many of you, this is your first foray into R/Rmarkdown or Git. I encourage you to ask me or your fellow classmates lots and lots of questions while you navigate this new world. The learning curve can be steep at first, but mastering a few basics of these software can open many doors :D Please see the additional lab documentation which provides a detailed introduction to the software used in this class, including set up and helpful links.    
+
+<center>
+
+**Labs are due every Monday at 2 pm**
+
+</center>
+
+*Reader's Digest Version for how this works*: I will post the lab assignment on GitHub. You will pull the assignment from GitHub and make a local copy on your personal computer. Then, you will complete the assignment and push it back to GitHub, where I will pull it and grade it. Labs will be pulled Mondays at 2 pm. 
+
+
+# Lab 1 Instructions:
+
+Here are the steps to completing the lab:
+
+1) Clone a local copy of this file repository to your computer from github [see directions in the "How to GitHub" help document]
+
+2) Open the local copy, Type your name in the YAML header where it says "author", and answer the questions (below).
+
+3) When you have finished, save your `.Rmd` file and then knit it to a PDF.
+
+4) Use git to commit your changes to the `.Rmd` file (aka your answers because you pulled my blank template from GitHub) to your local git repository [see directions in the "How to GitHub" help document].
+
+5) Push the changes from your local repository to github.  
+
+
+This assignment comes from chapter two of the course textbook **Global Warming: Understanding the Forecast**. It consists of **Exercises 1-2, 4-5, and 7**. I have worked the first exercise for you as an example. 
+
+
+
+## Understanding the Forecast: Exercise 2.1
+
+> A joule (J) is an amount of energy, and a watt (W) is a rate of using energy, 
+> defined as 1 W = 1 J/s. How many Joules of energy are required to run a 100-W 
+> light bulb for one day?
+
+```{r ex_2_1_a}
+seconds_per_hour = 60 * 60 # number of seconds in one hour
+hours_per_day = 24 # number of seconds in one day
+light_bulb_power = 100
+joules_per_day = light_bulb_power * seconds_per_hour * hours_per_day
+
+joules_per_day
+```
+
+It can be hard to read a long number like that, so we can use R's format command to add commas:
+
+```{r formatting_example}
+format_md(joules_per_day, comma = TRUE)
+```
+
+**Answer:** A `r light_bulb_power` watt light bulb burns `r light_bulb_power` Joules per second, 
+so the light bulb burns `r light_bulb_power * seconds_per_hour` Joules per hour and
+`r joules_per_day` Joules per day.
+
+> Burning coal yields about 30 &times; 10^6^ J of energy per kilogram of coal burned. 
+> Assuming that the coal power plant is 30% efficient,
+> how much coal has to be burned to light that light bulb for one day?
+
+```{r ex_2_1_b}
+joules_heat_per_kg_coal = 30.E+6
+efficiency = 0.30
+joules_electricity_per_kg_coal = joules_heat_per_kg_coal * efficiency
+kg_coal_per_joule_electricity = 1 / joules_electricity_per_kg_coal
+kg_coal_per_day = joules_per_day * kg_coal_per_joule_electricity
+
+kg_coal_per_day
+```
+
+**Answer:** 1 kilogram of coal produces `r format_md(joules_heat_per_kg_coal, digits = 1)` joules of heat, which is converted into `r format_md(joules_electricity_per_kg_coal, digits = 1)` joules of electricity.
+We can turn this around and figure that to get 1 joule of electricity takes 1 / (`r format_md(joules_electricity_per_kg_coal, digits = 1)`) = `r format_md(kg_coal_per_joule_electricity, digits = 1)` kg of coal,
+so to get `r format_md(joules_per_day, digits = 1)` joules of electricity to power the light bulb for one day takes `r format_md(kg_coal_per_day, digits = 2)` kg of coal.
+
+
+
+
+## Understanding the Forecast: Exercise 2.2
+
+> A gallon of gasoline carries with it about 1.3 &times; 10^8^ J of energy. 
+> Given a price of $3 per callon, how many Joules can you get for a dollar?
+
+```{r ex_2_2_a}
+# Put your R code here to answer the question
+```
+
+**Answer:** You can get ... Joules per dollar from gasoline.
+
+> Electricity goes for about $0.05 per kilowatt hour. A kilowatt hour is just a 
+> weird way to write Joules because a watt is a joule per second, and a kilowatt 
+> hour is the number of Joules one would get from running 1000 W time one hour
+> (3,600 seconds). In the form of electricity, how many Joules can you get for a 
+> dollar?
+
+```{r ex_2_2_b}
+# Put your R code here to answer the question
+```
+
+**Answer:** put your answer here ...
+
+> A standard cubic foot of natural gas carries with it about 1.1 &times; 10^6^ Joules
+> of energy. You can get about 5 &times; 10^5^ British Thermal Units (BTUs) of gas
+> for a dollar, and there are about 1,030 BTUs in a standard cubic foot. 
+> How many Joules of energy in the form of natural gas can you get for a dollar?
+
+```{r ex_2_2_c}
+# Put your R code here to answer the question
+```
+
+**Answer:** put your answer here ...
+
+> A ton of coal holds about 3.2 &times; 10^10^ J of energy and costs about $40.
+> How many Joules of energy in the form of coal can you get for a dollar?
+
+```{r ex_2_2_d}
+# Put your R code here to answer the question
+```
+
+**Answer:** put your answer here ...
+
+> Corn oil costs about $0.10 per fluid ounce wholesale. A fluid ounce carries
+> about 240 dietary Calories (which a scientist would call kilocalories).
+> A dietary Calorie is about 4200 J. How many Joules of energy in the form of
+> corn oil can you get for a dollar?
+
+```{r ex_2_2_e}
+# Put your R code here to answer the question
+```
+
+**Answer:** put your answer here ...
+
+> Rank these five energy sources from cheap to expensive. 
+> What is the range of prices?
+
+**Answer:** put your answer here ...
+
+
+
+## Understanding the Forecast: Exercise 2.4
+
+> The Hoover Dam produces $2 \times 10^{9}$ W of electricity. It is composed of 
+> $7 \times 10^{9}$ kg of concrete.
+> Concrete requires 1 MJ of energy (1 megajoule, 1,000,000 Joules) to produce 
+> per kilogram. 
+> How much energy did it take to produce the dam? How long is the "energy payback 
+> time" for the dam?
+
+```{r ex_2_4_a}
+# Put your R code here to answer the question
+```
+
+**Answer:** put your answer here ...
+
+> The area of Lake Mead, formed by Hoover Dam, is 247 mi^2^. Assuming 250 W/m^2^ 
+> of sunlight falls on Lake Mead, how much energy could you produce if instead of 
+> the lake you installed solar cells that were 12% efficient? 
+> (1 mile is 1609 meters; how many square meters are in a square mile?)
+
+```{r ex_2_4_b}
+# Put your R code here to answer the question
+```
+
+**Answer:** put your answer here ...
+
+
+
+
+## Understanding the Forecast: Exercise 2.5
+
+> It takes approximately $2 \times 10^{9}$ J of energy to manufacture 1 m^2^ of 
+> crystalline-silicon photovoltaic cell. (Actually, the number quoted was 
+> 600 kilowatt hours. Can you figure out how to convert kilowatt hours into 
+> Joules?) Assume that the solar cell is 12% efficient, and calculate how long it
+> would take, given 250 W/m^2^ of sunlight, for the solar cell to repay the energy 
+> it cost for its manufacture.
+
+```{r ex_2_5}
+# Put your R code here to answer the question
+```
+
+**Answer:** put your answer here ...
+
+
+
+
+
+## Understanding the Forecast: Exercise 2.7
+
+> Infrared light has a wavelength of about 10 $\mu$m. What is its wave number in
+> cm^-1^?
+
+```{r ex_2_7_a}
+# Put your R code here to answer the question
+```
+
+**Answer:** put your answer here ...
+
+> Visible light has a wavelength of about 0.5 $\mu$m. What is its frequency in 
+> Hz (cycles per second)?
+
+```{r ex_2_7_b}
+# Put your R code here to answer the question
+```
+
+**Answer:** put your answer here ...
+
+> FM radio operates at a frequency of about 40 kHz. What is its wavelength?
+
+```{r ex_2_7_c}
+# Put your R code here to answer the question
+```
+
+**Answer:** put your answer here ...
