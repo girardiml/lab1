@@ -1,11 +1,11 @@
 ---
 title: "ENVS 336 Lab 01: Introduction to R"
 subtitle: "Forecast: Chapter 2 Blackbody Radiation"
-author: "put your name here"
-date: "Monday, January 4, 2021"
+author: "Mia Girardi"
+date: "Monday, January 11, 2021"
 output:
-  html_document: default
   pdf_document: default
+  html_document: default
   github_document: default
 ---
 
@@ -20,8 +20,6 @@ knitr::opts_chunk$set(echo = TRUE)
 
 library(tidyverse)
 library(stringr)
-
-source("scripts/format_md.R")
 ```
 
 # Introduction
@@ -110,10 +108,14 @@ so to get `r format_md(joules_per_day, digits = 1)` joules of electricity to pow
 > Given a price of $3 per callon, how many Joules can you get for a dollar?
 
 ```{r ex_2_2_a}
-# Put your R code here to answer the question
+gasoline_energy=1.3E8 
+gasoline_price=3
+gasoline_J_per_dollar = gasoline_energy/gasoline_price
+
 ```
 
-**Answer:** You can get ... Joules per dollar from gasoline.
+
+**Answer:** You can get 4.3E107 Joules per dollar from gasoline.
 
 > Electricity goes for about $0.05 per kilowatt hour. A kilowatt hour is just a 
 > weird way to write Joules because a watt is a joule per second, and a kilowatt 
@@ -122,10 +124,12 @@ so to get `r format_md(joules_per_day, digits = 1)` joules of electricity to pow
 > dollar?
 
 ```{r ex_2_2_b}
-# Put your R code here to answer the question
+Electricity_kwh_price=0.05
+Joules_per_kwh=1000*3600
+Electricity_J_per_dollar= Joules_per_kwh/Electricity_kwh_price
 ```
 
-**Answer:** put your answer here ...
+**Answer:** 5.3E108 J/dollar for electricity 
 
 > A standard cubic foot of natural gas carries with it about 1.1 &times; 10^6^ Joules
 > of energy. You can get about 5 &times; 10^5^ British Thermal Units (BTUs) of gas
@@ -133,19 +137,25 @@ so to get `r format_md(joules_per_day, digits = 1)` joules of electricity to pow
 > How many Joules of energy in the form of natural gas can you get for a dollar?
 
 ```{r ex_2_2_c}
-# Put your R code here to answer the question
+J_per_cubic_foot=1.1E6
+btu_per_dollar=5E5
+btu_per_cubic_foot=1030
+natural_gas_per_dollar=(btu_per_dollar/btu_per_cubic_foot)*J_per_cubic_foot
+
 ```
 
-**Answer:** put your answer here ...
+**Answer:** 5.3x10^8 J/dollar of natural gas 
 
 > A ton of coal holds about 3.2 &times; 10^10^ J of energy and costs about $40.
 > How many Joules of energy in the form of coal can you get for a dollar?
 
 ```{r ex_2_2_d}
-# Put your R code here to answer the question
+j_per_ton_coal=3.2E10
+dollar_per_ton_coal=40
+coal_j_per_dollar=j_per_ton_coal/dollar_per_ton_coal
 ```
 
-**Answer:** put your answer here ...
+**Answer:** You can buy 8*10^8 j/dollar for coal
 
 > Corn oil costs about $0.10 per fluid ounce wholesale. A fluid ounce carries
 > about 240 dietary Calories (which a scientist would call kilocalories).
@@ -153,15 +163,19 @@ so to get `r format_md(joules_per_day, digits = 1)` joules of electricity to pow
 > corn oil can you get for a dollar?
 
 ```{r ex_2_2_e}
-# Put your R code here to answer the question
+corn_oil_price_per_floz=.10
+corn_oil_cal_per_floz=240
+joules_per_cal=4.2*1000
+corn_oil_j_per_floz=joules_per_cal*corn_oil_cal_per_floz
+corn_oil_j_per_dollar=corn_oil_j_per_floz/corn_oil_price_per_floz
 ```
-
-**Answer:** put your answer here ...
+**Answer:** 1.01E7 J/dollar for corn oil
 
 > Rank these five energy sources from cheap to expensive. 
 > What is the range of prices?
 
-**Answer:** put your answer here ...
+**Answer:** From cheapest to most expensive: Coal, natural gas, electricity, gasoline, corn oil
+Corn oil is 80 times more expensive than coal
 
 
 
@@ -175,10 +189,15 @@ so to get `r format_md(joules_per_day, digits = 1)` joules of electricity to pow
 > time" for the dam?
 
 ```{r ex_2_4_a}
-# Put your R code here to answer the question
+hoover_production_watts=2E9
+hoover_concrete_kg=7E9
+concrete_energy_j=1E6
+hoover_concrete_energy=concrete_energy_j*hoover_concrete_kg
+Energy_payback=hoover_concrete_energy/hoover_production_watts
 ```
 
-**Answer:** put your answer here ...
+**Answer:** It took 7E15 J of energy to make the Hoover Dam concrete.
+It would take 3.5E6 seconds to payback the energy needed to create the Hoover Dam concrete.
 
 > The area of Lake Mead, formed by Hoover Dam, is 247 mi^2^. Assuming 250 W/m^2^ 
 > of sunlight falls on Lake Mead, how much energy could you produce if instead of 
@@ -186,10 +205,15 @@ so to get `r format_md(joules_per_day, digits = 1)` joules of electricity to pow
 > (1 mile is 1609 meters; how many square meters are in a square mile?)
 
 ```{r ex_2_4_b}
-# Put your R code here to answer the question
+sunlight=250
+efficiency=.12
+mead_sq_miles=247
+sq_meter_per_sq_mile=2.59E6
+Mead_area=mead_sq_miles*sq_meter_per_sq_mile
+Solar_power_watts=sunlight*efficiency*Mead_area
 ```
 
-**Answer:** put your answer here ...
+**Answer:** Solar panels with 12% efficency at Lake Mead would produce 1.9E10 Watts of power
 
 
 
@@ -204,10 +228,20 @@ so to get `r format_md(joules_per_day, digits = 1)` joules of electricity to pow
 > it cost for its manufacture.
 
 ```{r ex_2_5}
-# Put your R code here to answer the question
+energy_kwh=600
+joules_per_kwh=1000*3600
+energy_j=2E9
+efficiency=.12
+sunlight_watts=250
+total_energy=energy_kwh*joules_per_kwh
+solar_power=sunlight_watts*efficiency
+payback_seconds=energy_j/solar_power
+payback_days=payback_seconds/(24*3600)
+payback_years=payback_days/(365)
+
 ```
 
-**Answer:** put your answer here ...
+**Answer:** It would take 10 years for to payback the energy needed to make the solar panels
 
 
 
@@ -219,24 +253,29 @@ so to get `r format_md(joules_per_day, digits = 1)` joules of electricity to pow
 > cm^-1^?
 
 ```{r ex_2_7_a}
-# Put your R code here to answer the question
+wavelength_meters=10E-6
+centimeters_to_meters=.01
+wavenumbers=centimeters_to_meters/wavelength_meters
 ```
 
-**Answer:** put your answer here ...
+**Answer:** 10um radiation has a wavenumber of 1E3 cm^-1
 
 > Visible light has a wavelength of about 0.5 $\mu$m. What is its frequency in 
 > Hz (cycles per second)?
 
 ```{r ex_2_7_b}
-# Put your R code here to answer the question
+wavelength=0.5E-6
+speed_of_light_m_per_second=3E8
+frequency_in_hz=speed_of_light_m_per_second/wavelength
 ```
 
-**Answer:** put your answer here ...
+**Answer:** The frequency in Hz of visible light is 6E14 
 
 > FM radio operates at a frequency of about 40 kHz. What is its wavelength?
 
 ```{r ex_2_7_c}
-# Put your R code here to answer the question
+frequency=40E3
+wavelength=speed_of_light_m_per_second/frequency 
 ```
 
-**Answer:** put your answer here ...
+**Answer:** The wavelength of FM radio is 7.5E3 meters
